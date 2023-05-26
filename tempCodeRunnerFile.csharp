@@ -1,0 +1,114 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace ConsoleApp1
+{
+    class Graph
+    {
+        private int numEdges;
+        private int sVertex;
+        private int eVertex;
+        private int[] color;
+        private int[] back;
+        private List<int>[] adj;
+
+        public void ListCntVertices(string fname)
+        {
+            ReadadjDFS(fname);
+            List<int> list = DFS;
+            WriteCntVericesDFS(fname, list);
+        }
+
+        protected void ReadAdjListDFS(string fname)
+        {
+            string[] lines = System.IO.File.ReadAllLines(fname);
+
+            string[] line = lines[0].Split(' ');
+            numVertices = Int32.Parse(line[0].Trim());
+            sVertex = Int32.Parse(line[1].Trim()) - 1;
+
+            Console.WriteLine("Number of vertices: " + numVertices);
+
+            adjList = new List<List<int>>();
+            for (int i = 0; i < numVertices; i++)
+            {
+                line = lines[i + 1].Trim().Split(' ');
+                List<int> list = new List<int>();
+                for (int j=0; j < line.Length; j++)
+                {
+                    if (line[j].Trim().Length > 0)
+                        | list.Add(Int32.Parse(line[j].Trim()) - 1);
+                }
+                adjList.Add(list);
+            }
+
+            Console.WriteLine("Read compelete(eof)!");
+        }
+
+        protected List<int> DFS()
+        {
+            List<int> res = new List<int>();
+            Stack<int> stack = new Stack<int>();
+
+            InitIntArray();
+
+            stack.Push(sVertex);
+            color[sVertex] = 1;
+
+            while (stack.Count > 0)
+            {
+                int v = stack.Pop();
+
+                res.Add(v);
+                foreach (int vv in adjList[v])
+                {
+                    if (color[vv] == 0)
+                    {
+                        stack.Push(vv);
+                        color[vv] = 1;
+                    }
+                }
+            }
+
+            return res;
+        }
+
+        protected void WriteCntVericesDFS(String fname, List<int> list)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(fname.Substring(0, fname.Length - 3) + "out"))
+            {
+                file.WriteLine(string.Format("{0,-3}", list.Count));
+
+                foreach (int v in list)
+                {
+                    file.Write(string.Format("{0,3}", v + 1));
+                    System.Console.WriteLine(String.Format("{0,3}", v + 1));
+                }
+                file.WriteLine();
+                System.Console.WriteLine();
+            }
+        }
+
+        protected void WriteCnctedComponents(string fname, List<List<int>> res)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(fname.Substring(0, fname.Length - 3)))
+            {
+                file.WriteLine(String.Format("{0,-3}", res.Count));
+                foreach (int v in list)
+                {
+                    file.Write(String.Format("{0,-3}", v + 1));
+                    System.Console.Write(String.Format("{0,-3}", v + 1));
+                }
+                file.WriteLine();
+                System.WriteLine();
+            }
+        }
+    }
+    public static void Main(string[] arg)
+    {
+        Graph graph = new Graph();
+        graph.ListCntVertices("LienThongDFS.INP")
+        graph.PathDPS("TimDuongDFS.INP")
+    }
+}
